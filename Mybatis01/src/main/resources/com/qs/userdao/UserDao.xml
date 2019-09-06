@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+ <mapper namespace="com.qs.userdao.UserDao">
+    <!--
+        resultType="com.qs.userdao.User"
+        当表中的列名和类中的属性名不一致时，
+        我们如果还坚持使用resultType就相当的麻烦，
+        有时候甚至根本无法得到数据
+        使用resultMap来映射
+                               这里是使用的别名-->
+    <resultMap id="userMap" type="Userti">
+        <!-- 映射主键 -->
+        <id property="id" column="id" />
+        <!--  非主键映射  -->
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="nicheng"  column="nicheng" />
+        <result property="type"     column="type" />
+    </resultMap>
+    <!--使用resultMap来映射-查询所有-->
+    <select id="getuser" resultMap="userMap">
+        select * from userti
+    </select>
+
+<!--      &lt;!&ndash;常规查询所有&ndash;&gt;
+        <select id="getuser" resultType="com.qs.userdao.Userti">
+            select * from userti where id=6
+        </select>-->
+
+
+      <!--添加信息                        使用的别名-->
+        <insert id="adduser" parameterType="Userti">
+            <!--
+            keyProperty : 类中主键的属性名
+            keyColumn   : 表中主键的字段名
+            order       : 在插入语句的前执行还是后执行
+                            before  前执行
+                            after   后执行
+            resultType  : 主键的返回值类型
+        -->
+            <selectKey keyProperty="id" keyColumn="id" order="AFTER" resultType="int">
+                SELECT LAST_INSERT_ID()
+            </selectKey>
+            insert into userti (username,password,type,nicheng)
+            values(#{username},#{password},#{type},#{nicheng})
+        </insert>
+
+     <!--修改信息-->
+        <update id="updateuser" parameterType="Userti">
+            update  userti set username=#{username},password=#{password},type=#{type},nicheng=#{nicheng} where id=#{id}
+        </update>
+
+     <!--删除信息-->
+        <delete id="deleteuser" parameterType="int">
+            delete  from userti where id=${value}
+        </delete>
+     <!--根据用户名查找信息-->
+    <select id="getIdMyuser" parameterType="Userti" resultType="Userti">
+        select * from userti where nicheng like #{nicheng}
+    </select>
+
+    <!--根据值对象来封装数据-->
+    <!--#{}  代表预编译PreparedStatement
+        ${}  代表Statement
+       -->
+    <select id="addcar" parameterType="Car">
+        insert into userti (username,password,type,nicheng)
+            values(#{userti.username},#{userti.password},#{userti.type},#{userti.nicheng})
+    </select>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--
+        environments 环境
+    -->
+    <!--引用jdbc外置配置文件-->
+    <properties resource="jdbc.properties"/>
+
+    <typeAliases>
+        <!--别名 这个是自己可以扫描包里面的实体类 不用区分大小写-->
+        <package name="com.qs.entity"/>
+    </typeAliases>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--事务管理-->
+            <transactionManager type="jdbc"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- 引入配置文件 -->
+    <mappers>
+     <!--   <mapper class="com.qs.userdao.Userti"></mapper>-->
+
+       <!-- <mapper resource="com/qs/userdao/UsertiMapper.xml"/>-->
+        <!---->
+        <package name="com.qs.userdao"/>
+    </mappers>
+</configuration>
